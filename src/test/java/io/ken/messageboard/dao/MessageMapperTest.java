@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -35,5 +36,26 @@ public class MessageMapperTest {
             System.out.println(String.format("id:%s,user:%s,message:%s", message.getId(), message.getUserName(), message.getBody()));
         }
         assert (messageList != null && messageList.size() > 0) : "查询出错";
+    }
+
+    @Test
+    public void addBatch() {
+        int num = 100;
+        Message message = new Message();
+        message.setParentId(0);
+        message.setInsertTime(LocalDateTime.now());
+        message.setUpdateTime(LocalDateTime.now());
+        HashMap<Integer, String> userMap = new HashMap<>();
+        userMap.put(1, "Ken");
+        userMap.put(2, "Frank");
+        userMap.put(3, "Candy");
+        for (int i = 0; i < num; i++) {
+            int randomNum = (int) (Math.random() * 1000);
+            int userId = randomNum % 3 + 1;
+            message.setUserId(userId);
+            message.setUserName(userMap.get(userId));
+            message.setBody("这是一个测试留言" + randomNum);
+            messageMapper.add(message);
+        }
     }
 }
