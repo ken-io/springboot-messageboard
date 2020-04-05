@@ -22,9 +22,9 @@
 <body>
 
 <!--导航 begin-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixd-top">
     <div class="container-xl">
-        <a class="navbar-brand" href="#">留言板</a>
+        <a class="navbar-brand" href="/">留言板</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
