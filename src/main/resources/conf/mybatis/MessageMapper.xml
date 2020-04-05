@@ -21,4 +21,8 @@
             VALUES (#{userId},#{userName},#{body},#{parentId},#{insertTime},#{updateTime})
     </insert>
 
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM message
+    </select>
+
 </mapper>

@@ -12,4 +12,6 @@ public interface MessageMapper {
     List<Message> queryListPaging(@Param("offset") int offset, @Param("num") int num);
 
     int add(Message message);
+
+    int countAll();
 }

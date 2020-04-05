@@ -58,4 +58,11 @@ public class MessageMapperTest {
             messageMapper.add(message);
         }
     }
+
+    @Test
+    void countAll() {
+        int num = messageMapper.countAll();
+        System.out.println(num);
+        assert (num > 0);
+    }
 }
