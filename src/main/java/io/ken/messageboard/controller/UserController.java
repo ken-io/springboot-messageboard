@@ -42,4 +42,10 @@ public class UserController {
         AuthUserUtil.setUserAuth(response, user.getId() + "", user.getName());
         return "redirect:/message/list";
     }
+
+    @RequestMapping("/logout")
+    String logout(HttpServletResponse response){
+        AuthUserUtil.clearUserAuth(response);
+        return "redirect:/message/list";
+    }
 }

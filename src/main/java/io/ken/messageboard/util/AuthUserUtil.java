@@ -38,4 +38,11 @@ public class AuthUserUtil {
         userCookie.setPath("/");
         response.addCookie(userCookie);
     }
+
+    public static void clearUserAuth(HttpServletResponse response) {
+        Cookie userCookie = new Cookie("auth", null);
+        userCookie.setPath("/");
+        userCookie.setMaxAge(0);
+        response.addCookie(userCookie);
+    }
 }
