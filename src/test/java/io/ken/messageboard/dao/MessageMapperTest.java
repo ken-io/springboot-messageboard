@@ -40,7 +40,7 @@ public class MessageMapperTest {
 
     @Test
     public void addBatch() {
-        int num = 100;
+        int num = 1000;
         Message message = new Message();
         message.setParentId(0);
         message.setInsertTime(LocalDateTime.now());

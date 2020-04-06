@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -27,9 +29,9 @@ public class MessageController {
     @RequestMapping("/list")
     ModelAndView list(HttpServletRequest request, @RequestParam(required = false) Integer page) {
         ModelAndView modelAndView = new ModelAndView();
-        String userName = AuthUserUtil.getAuthUserName(request);
-        if (userName != null && !userName.equals("")) {
-            modelAndView.addObject("username", userName);
+        AuthUserUtil.AuthUser authUser = new AuthUserUtil().getAuthUser(request);
+        if (authUser != null) {
+            modelAndView.addObject("username", authUser.getUserName());
             int dataCount = messageMapper.countAll();
             int pageTotal = dataCount / pageSize;
             if (dataCount % pageSize != 0) pageTotal += 1;
@@ -45,5 +47,18 @@ public class MessageController {
 
         modelAndView.setViewName("message/list");
         return modelAndView;
+    }
+
+    @RequestMapping("/submit")
+    @ResponseBody
+    String submit(HttpServletRequest request, Message message) {
+        AuthUserUtil.AuthUser authUser = new AuthUserUtil().getAuthUser(request);
+        if (authUser == null) return "please login";
+        if (message.getBody() == null || message.getBody().equals("")) return "message is empty";
+        message.setUserId(Integer.parseInt(authUser.getUserId()));
+        message.setUserName(authUser.getUserName());
+        message.setInsertTime(LocalDateTime.now());
+        message.setUpdateTime(LocalDateTime.now());
+        return messageMapper.add(message) > 0 ? "success" : "failed";
     }
 }

@@ -1,15 +1,17 @@
 package io.ken.messageboard.util;
 
+import io.ken.messageboard.model.User;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class AuthUserUtil {
 
-    public static String getAuthUserName(HttpServletRequest request) {
+    public AuthUser getAuthUser(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String userInfo = null;
-        String userName = null;
+        AuthUser user = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("auth")) {
@@ -23,13 +25,15 @@ public class AuthUserUtil {
                 String userInfoText = AesUtil.decrypt(userInfo);
                 String[] users = userInfoText.split(",");
                 if (users.length == 2) {
-                    userName = users[1];
+                    user = new AuthUser();
+                    user.setUserId(users[0]);
+                    user.setUserName(users[1]);
                 }
             } catch (Exception e) {
                 //todo 记录异常日志
             }
         }
-        return userName;
+        return user;
     }
 
     public static void setUserAuth(HttpServletResponse response, String userId, String userName) throws Exception {
@@ -44,5 +48,27 @@ public class AuthUserUtil {
         userCookie.setPath("/");
         userCookie.setMaxAge(0);
         response.addCookie(userCookie);
+    }
+
+    public class AuthUser {
+        private String userId;
+
+        private String userName;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
     }
 }
