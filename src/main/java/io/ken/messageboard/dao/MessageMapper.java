@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface MessageMapper {
 
-    List<Message> queryListPaging(@Param("offset") int offset, @Param("num") int num);
+    List<Message> queryListPaging(@Param("offset") int offset, @Param("num") int num, @Param("parentId") int parentId);
 
     int add(Message message);
 

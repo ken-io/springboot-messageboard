@@ -13,7 +13,7 @@
     </resultMap>
 
     <select id="queryListPaging" resultMap="messageMap">
-        SELECT *  FROM message ORDER BY id DESC LIMIT #{offset},#{num}
+        SELECT *  FROM message WHERE parent_id=#{parentId} ORDER BY id DESC LIMIT #{offset},#{num}
     </select>
 
     <insert id="add" parameterType="io.ken.messageboard.model.Message" useGeneratedKeys="true" keyProperty="id">

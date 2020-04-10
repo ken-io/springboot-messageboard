@@ -31,7 +31,7 @@ public class MessageMapperTest {
 
     @Test
     public void queryListPaging() {
-        List<Message> messageList = messageMapper.queryListPaging(1, 1);
+        List<Message> messageList = messageMapper.queryListPaging(1, 1, 0);
         for (Message message : messageList) {
             System.out.println(String.format("id:%s,user:%s,message:%s", message.getId(), message.getUserName(), message.getBody()));
         }

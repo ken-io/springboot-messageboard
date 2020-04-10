@@ -26,6 +26,8 @@ public class MessageController {
 
     int pageSize = 10;
 
+    int defaultParentId = 0;
+
     @RequestMapping("/list")
     ModelAndView list(HttpServletRequest request, @RequestParam(required = false) Integer page) {
         ModelAndView modelAndView = new ModelAndView();
@@ -37,11 +39,11 @@ public class MessageController {
             if (dataCount % pageSize != 0) pageTotal += 1;
             if (page == null || page <= 0) page = 1;
             if (page > pageTotal) page = pageTotal;
-            List<Message> messageList = messageMapper.queryListPaging(pageSize * (page - 1), pageSize);
+            List<Message> messageList = messageMapper.queryListPaging(pageSize * (page - 1), pageSize, defaultParentId);
             modelAndView.addObject("messageList", messageList);
             modelAndView.addObject("pagination", PagingUtil.getPagingHtml(request.getServletPath() + "?page=", page, pageSize, dataCount));
         } else {
-            List<Message> messageList = messageMapper.queryListPaging(0, pageSize);
+            List<Message> messageList = messageMapper.queryListPaging(0, pageSize, defaultParentId);
             modelAndView.addObject("messageList", messageList);
         }
 
