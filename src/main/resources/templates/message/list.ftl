@@ -71,7 +71,7 @@
         $("#btnMessageSubmit").click(function () {
             var userName = $("#txtUserName").val();
             var body = $("#txtBody").val();
-            $.post("/message/submit", {body: body}, function (data) {
+            $.post("/message/submit", {body: body, parentId: 0}, function (data) {
 
                 if (data == "success") {
                     var messageHtml = '<div class="message-info media text-muted pt-3">\n' +
