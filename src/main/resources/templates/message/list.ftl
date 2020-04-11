@@ -4,7 +4,7 @@
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <#if username??>
             <div class="msg-panel">
-                <div id="submmitMsg" class="alert" style="display: none">
+                <div id="submitMsg" class="alert" style="display: none">
 
                 </div>
                 <div class="p-3">
@@ -92,13 +92,13 @@
 
                     $(messageHtml).insertBefore($("#messageList .message-info:first"));
                     $("#messageList .message-info:last").remove();
-                    $("#submmitMsg").text("留言成功");
-                    $("#submmitMsg").addClass("alert-success");
+                    $("#submitMsg").text("留言成功");
+                    $("#submitMsg").addClass("alert-success");
                 } else {
-                    $("#submmitMsg").text("留言失败:" + data);
-                    $("#submmitMsg").addClass("alert-warning");
+                    $("#submitMsg").text("留言失败:" + data);
+                    $("#submitMsg").addClass("alert-warning");
                 }
-                $("#submmitMsg").show();
+                $("#submitMsg").show();
             });
         });
     </script>
