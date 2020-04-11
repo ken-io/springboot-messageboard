@@ -1,6 +1,7 @@
 package io.ken.messageboard.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Message {
 
@@ -14,9 +15,13 @@ public class Message {
 
     private int parentId;
 
+    private int replyNum;
+
     private LocalDateTime insertTime;
 
     private LocalDateTime updateTime;
+
+    private List<Message> replyList;
 
     public int getId() {
         return id;
@@ -58,6 +63,14 @@ public class Message {
         this.parentId = parentId;
     }
 
+    public int getReplyNum() {
+        return replyNum;
+    }
+
+    public void setReplyNum(int replyNum) {
+        this.replyNum = replyNum;
+    }
+
     public LocalDateTime getInsertTime() {
         return insertTime;
     }
@@ -72,5 +85,13 @@ public class Message {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<Message> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Message> replyList) {
+        this.replyList = replyList;
     }
 }

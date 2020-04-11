@@ -16,9 +16,13 @@
         SELECT *  FROM message WHERE parent_id=#{parentId} ORDER BY id DESC LIMIT #{offset},#{num}
     </select>
 
+    <select id="queryListPagingAsc" resultMap="messageMap">
+        SELECT *  FROM message WHERE parent_id=#{parentId} ORDER BY id ASC LIMIT #{offset},#{num}
+    </select>
+
     <insert id="add" parameterType="io.ken.messageboard.model.Message" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO message(user_id,user_name,body,parent_id,insert_time,update_time)
-            VALUES (#{userId},#{userName},#{body},#{parentId},#{insertTime},#{updateTime})
+        INSERT INTO message(user_id,user_name,body,parent_id,reply_num,insert_time,update_time)
+            VALUES (#{userId},#{userName},#{body},#{parentId},#{replyNum},#{insertTime},#{updateTime})
     </insert>
 
     <select id="countAll" resultType="int">

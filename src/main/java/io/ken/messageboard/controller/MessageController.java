@@ -1,7 +1,9 @@
 package io.ken.messageboard.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ken.messageboard.dao.MessageMapper;
 import io.ken.messageboard.model.Message;
+import io.ken.messageboard.model.Result;
 import io.ken.messageboard.util.AesUtil;
 import io.ken.messageboard.util.AuthUserUtil;
 import io.ken.messageboard.util.PagingUtil;
@@ -40,6 +42,9 @@ public class MessageController {
             if (page == null || page <= 0) page = 1;
             if (page > pageTotal) page = pageTotal;
             List<Message> messageList = messageMapper.queryListPaging(pageSize * (page - 1), pageSize, defaultParentId);
+            for (Message message : messageList) {
+                message.setReplyList(messageMapper.queryListPagingAsc(0, 100, message.getId()));
+            }
             modelAndView.addObject("messageList", messageList);
             modelAndView.addObject("pagination", PagingUtil.getPagingHtml(request.getServletPath() + "?page=", page, pageSize, dataCount));
         } else {
@@ -53,14 +58,30 @@ public class MessageController {
 
     @RequestMapping("/submit")
     @ResponseBody
-    String submit(HttpServletRequest request, Message message) {
+    String submit(HttpServletRequest request, Message message) throws Exception {
+        Result result = new Result();
+        ObjectMapper objectMapper = new ObjectMapper();
         AuthUserUtil.AuthUser authUser = new AuthUserUtil().getAuthUser(request);
-        if (authUser == null) return "please login";
-        if (message.getBody() == null || message.getBody().equals("")) return "message is empty";
-        message.setUserId(Integer.parseInt(authUser.getUserId()));
-        message.setUserName(authUser.getUserName());
-        message.setInsertTime(LocalDateTime.now());
-        message.setUpdateTime(LocalDateTime.now());
-        return messageMapper.add(message) > 0 ? "success" : "failed";
+        if (authUser == null) {
+            result.setCode(-1);
+            result.setMessage("please login");
+        } else if (message.getBody() == null || message.getBody().equals("")) {
+            result.setCode(1);
+            result.setMessage("message is empty");
+        } else {
+            message.setUserId(Integer.parseInt(authUser.getUserId()));
+            message.setUserName(authUser.getUserName());
+            message.setInsertTime(LocalDateTime.now());
+            message.setUpdateTime(LocalDateTime.now());
+            if (messageMapper.add(message) > 0) {
+                result.setCode(0);
+                result.setMessage("success");
+                result.setContent(message.getId());
+            } else {
+                result.setCode(2);
+                result.setMessage("failed");
+            }
+        }
+        return objectMapper.writeValueAsString(result);
     }
 }
